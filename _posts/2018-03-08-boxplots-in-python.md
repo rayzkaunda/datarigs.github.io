@@ -151,6 +151,7 @@ plt.legend(loc='upper left')
 
 
 
+<img src="{{ site.url }}{{ site.baseurl }}/images/perceptron/linsep.jpg" alt="linearly separable data">
 
 ![png](/images/2018-03-09-boxplots-in-python_files/2018-03-09-boxplots-in-python_4_1.png)
 
