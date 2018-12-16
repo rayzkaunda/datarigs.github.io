@@ -200,7 +200,7 @@ plt.legend(loc='upper left')
 
 
 
-![alt]({{ site.url }}{{ site.baseurl }}images/2018-03-09-boxplots-in-python_files/2018-03-09-boxplots-in-python_8_1.png)
+![alt]({{ site.url }}{{ site.baseurl }}/images/2018-03-09-boxplots-in-python_files/2018-03-09-boxplots-in-python_8_1.png)
 
 
 # More modifications
