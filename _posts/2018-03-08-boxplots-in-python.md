@@ -150,12 +150,6 @@ plt.legend(loc='upper left')
     <matplotlib.legend.Legend at 0x1106afb50>
 
 
-![alt]({{ site.url }}{{ site.baseurl }}/images/perceptron/linsep.jpg)
-
-![jpg](/images/boxplots1.jpg)
-
-![png](/images/2018-03-09-boxplots-in-python_files/2018-03-09-boxplots-in-python_4_1.png)
-
 
 ![alt]({{ site.url }}{{ site.baseurl }}/images/2018-03-09-boxplots-in-python_files/2018-03-09-boxplots-in-python_4_1.png)
 
@@ -182,7 +176,7 @@ plt.legend(loc='upper left')
 
 
 
-![png](/images/2018-03-09-boxplots-in-python_files/2018-03-09-boxplots-in-python_6_1.png)
+![alt]({{ site.url }}{{ site.baseurl }}/images/2018-03-09-boxplots-in-python_files/2018-03-09-boxplots-in-python_6_1.png)
 
 
 Alternatively, you can explicitly specify the colors you want for each hue value.
@@ -206,7 +200,7 @@ plt.legend(loc='upper left')
 
 
 
-![png](/images/2018-03-09-boxplots-in-python_files/2018-03-09-boxplots-in-python_8_1.png)
+![alt]({{ site.url }}{{ site.baseurl }}images/2018-03-09-boxplots-in-python_files/2018-03-09-boxplots-in-python_8_1.png)
 
 
 # More modifications
@@ -257,7 +251,7 @@ ax.legend_.remove()
 ```
 
 
-![png](/images/2018-03-09-boxplots-in-python_files/2018-03-09-boxplots-in-python_10_0.png)
+![alt]({{ site.url }}{{ site.baseurl }}/images/2018-03-09-boxplots-in-python_files/2018-03-09-boxplots-in-python_10_0.png)
 
 
 If we want, we can also play with the facecolors. We can also do this with a normal call through the `palette` keyword in the seaborn function:
@@ -296,7 +290,7 @@ ax.legend_.remove()
 ```
 
 
-![png](/images/2018-03-09-boxplots-in-python_files/2018-03-09-boxplots-in-python_12_0.png)
+![alt]({{ site.url }}{{ site.baseurl }}/images/2018-03-09-boxplots-in-python_files/2018-03-09-boxplots-in-python_12_0.png)
 
 
 That looks pretty good (and is the version I ended up going with for my current manuscript), but what if you also want to change the line colors to match the hues? In this case, you need to go directly edit the artists after they're drawn.
@@ -329,7 +323,7 @@ for i, artist in enumerate(ax.artists):
 ```
 
 
-![png](/images/2018-03-09-boxplots-in-python_files/2018-03-09-boxplots-in-python_14_0.png)
+![alt]({{ site.url }}{{ site.baseurl }}/images/2018-03-09-boxplots-in-python_files/2018-03-09-boxplots-in-python_14_0.png)
 
 
 # A few final notes...
@@ -356,7 +350,7 @@ lgd.legendHandles[1]._sizes = [40]
 ```
 
 
-![png](/images/2018-03-09-boxplots-in-python_files/2018-03-09-boxplots-in-python_16_0.png)
+![alt]({{ site.url }}{{ site.baseurl }}/images/2018-03-09-boxplots-in-python_files/2018-03-09-boxplots-in-python_16_0.png)
 
 
 Also a note that you can change the width of the boxplot with the `width` parameter in the call to `sns.boxplot`. However, this doesn't change the width of each individual box, but rather the total width of each pair of boxes (or however many hues you have). So in the case where the data spans a similar range and the boxes are right next to each other (like in site 1, above), sometimes the box lines overlap slightly. If they're not black, then you can see this if you look closely. I haven't figured out a good way to fix this (and [it seems like](https://github.com/mwaskom/seaborn/issues/1076) maybe there might not be one).
