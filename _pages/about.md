@@ -2,6 +2,6 @@
 title: "About"
 permalink: /about/
 header:
-  image: "/images/office.jpg"
+  image: "/images/office.png"
 ---
 I'm an aspiring data scientist and engineer with profiency in AWS cloud , machine learning, analysis, and data visualizations.
