@@ -150,11 +150,14 @@ plt.legend(loc='upper left')
     <matplotlib.legend.Legend at 0x1106afb50>
 
 
+![alt]({{ site.url }}{{ site.baseurl }}/images/perceptron/linsep.jpg)
 
 ![jpg](/images/boxplots1.jpg)
 
 ![png](/images/2018-03-09-boxplots-in-python_files/2018-03-09-boxplots-in-python_4_1.png)
 
+
+![alt]({{ site.url }}{{ site.baseurl }}/images/2018-03-09-boxplots-in-python_files/2018-03-09-boxplots-in-python_4_1.png)
 
 The easiest way to improve these plots is to (1) change the seaborn style to `'white'` and (2) pass in a color palette that you like. Also note that when you plot both a boxplot and the raw points, you should tell seaborn not to plot any of the outliers with `fliersize=0`, otherwise you'll have double-points for these.
 
