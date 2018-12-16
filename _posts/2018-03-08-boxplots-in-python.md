@@ -151,7 +151,7 @@ plt.legend(loc='upper left')
 
 
 
-![png](/images/boxplot/2018-03-09-boxplots-in-python_4_1.png)
+![png](/images/boxplots-in-python_4_1.png)
 
 ![png](/images/2018-03-09-boxplots-in-python_files/2018-03-09-boxplots-in-python_4_1.png)
 
