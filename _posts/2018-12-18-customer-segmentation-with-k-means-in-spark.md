@@ -21,3 +21,4 @@ Clustering is the task of dividing the population or data points into a number o
 // Load dataset
 val customersDf = spark.read.format("csv").option("sep", ",").option("inferSchema", "true").option("header", "true").load("file://///Users/khumbokaunda/Desktop/BIGDATA/DATASETS/Telco-Customer-Churn.csv").cache()
 ```
+<img src="{{ site.url }}{{ site.baseurl }}/images/k-means/k-means1.jpg" alt="dataframe">
