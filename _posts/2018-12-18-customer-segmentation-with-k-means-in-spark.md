@@ -2,7 +2,7 @@
 title: Customer Segmentation with K-means in Spark
 tags: [k-means, spark]
 header:
-  image: "images/k-means/k-means_convergence.jpg"
+  image: "images/k-means/k-means.jpg"
 excerpt: "Machine Learning, Perceptron, Data Science"
 mathjax: "true"
 ---
