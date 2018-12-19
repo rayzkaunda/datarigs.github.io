@@ -1,6 +1,6 @@
 ---
 title: Customer Segmentation with K-means in Spark
-tags: [k-means, machine learning, data science, spark]
+tags: [k-means, spark]
 header:
   image: "/images/k-means/k-means_convergence.gif"
 excerpt: "Machine Learning, Perceptron, Data Science"
@@ -16,7 +16,9 @@ In general, in order to perform customer segmentation, companies use geographica
 Clustering is the task of dividing the population or data points into a number of groups such that data points in the same groups are more similar to other data points in the same group than those in other groups. In simple words, the aim is to segregate groups with similar traits and assign them into clusters. The goal of the k-means algorithm is to find groups in the data, with the number of groups represented by the variable K. The algorithm works iteratively to assign each data point to one of K groups based on the features that are provided. In the reference image below, K=2, and there are two clusters identified from the source dataset.
 
 ### Load data and EDA
-```scala
+
+``` scala
 // Load dataset
 val customersDf = spark.read.format("csv").option("sep", ",").option("inferSchema", "true").option("header", "true").load("file://///Users/khumbokaunda/Desktop/BIGDATA/DATASETS/Telco-Customer-Churn.csv").cache()
-'''
+
+```
