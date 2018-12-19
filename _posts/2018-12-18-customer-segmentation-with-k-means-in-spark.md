@@ -2,7 +2,7 @@
 title: Customer Segmentation with K-means in Spark
 tags: [k-means, spark]
 header:
-  image: "/images/k-means/k-means_convergence.gif"
+  image: "/images/perceptron/percept.jpg"
 excerpt: "Machine Learning, Perceptron, Data Science"
 mathjax: "true"
 ---
@@ -17,8 +17,7 @@ Clustering is the task of dividing the population or data points into a number o
 
 ### Load data and EDA
 
-``` scala
+```scala
 // Load dataset
 val customersDf = spark.read.format("csv").option("sep", ",").option("inferSchema", "true").option("header", "true").load("file://///Users/khumbokaunda/Desktop/BIGDATA/DATASETS/Telco-Customer-Churn.csv").cache()
-
 ```
