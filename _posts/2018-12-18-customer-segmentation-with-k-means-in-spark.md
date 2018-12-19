@@ -1,11 +1,11 @@
 ---
-title: Boxplots in python
+title: Customer Segmentation with K-means in Spark
 permalink: /posts/2018/12/customer-segmentation-with-k-means-in-spark
-date: 2018-12-18
-tags:
-    - spark
-    - k-means
-    - machine-learning
+tags: [spark, machine learning, data science, k-means]
+header:
+  image: "/images/k-means/K-means_convergence.gif"
+excerpt: "Machine Learning, Perceptron, Data Science"
+mathjax: "true"
 ---
 
 ### Customer Segmentation
