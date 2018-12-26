@@ -1,7 +1,7 @@
 ---
 title: "Machine Learning Project: Perceptron"
 date: 2018-12-15
-tags: 
+tags: [perceptron]
 header:
   image: "/images/perceptron/percept.jpg"
 excerpt: "Machine Learning, Perceptron, Data Science"

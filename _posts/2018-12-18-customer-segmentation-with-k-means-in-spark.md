@@ -1,6 +1,6 @@
 ---
 title: Customer Segmentation with K-means in Spark
-tags: 
+tags: [k-means]
 header:
   image: "images/k-means/customer-segment.jpg"
 excerpt: "Machine Learning, Perceptron, Data Science"
