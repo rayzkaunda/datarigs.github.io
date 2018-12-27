@@ -2,7 +2,7 @@
 title: Running Machine Learning Algorithms on AWS Sagemaker
 tags: [aws-sagemaker]
 header:
-  image: "images/k-means/customer-segment.jpg"
+  image: "images/sagemaker/sagemakerphases.jpg"
 excerpt: "AWS Sagemaker"
 mathjax: "true"
 ---
@@ -422,4 +422,3 @@ Finally run the following to delete the endpoint to avoid charges and stop(if yo
 ```python
 sm.delete_endpoint(EndpointName=linear_endpoint)
 ```
- 
