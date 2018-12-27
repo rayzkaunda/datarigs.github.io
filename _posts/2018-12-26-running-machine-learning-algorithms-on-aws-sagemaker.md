@@ -102,11 +102,11 @@ plt.rcParams['figure.figsize'] = (20, 9)
 sns.distplot(df_clean['absolute_magnitude'])
 plt.show()
 ```
-<img src="{{ site.url }}{{ site.baseurl }}/images/perceptron/linsep.jpg" alt="linearly separable data">
+<img src="{{ site.url }}{{ site.baseurl }}/images/sagemaker/sagemaker1.jpg" alt="sagemaker training">
 ### Observation:
 This histogram is a normal distribution as it is bell shaped.
 
-<img src="{{ site.url }}{{ site.baseurl }}/images/perceptron/linsep.jpg" alt="linearly separable data">
+<img src="{{ site.url }}{{ site.baseurl }}/images/sagemaker/sagemaker2.jpg" alt="sagemaker training">
 
 ### Observation:
 Non-Normality – Histogram: a right-skewed distribution, plotted as a histogram. The histogram is not bell-shaped, indicating that the distribution is not normal.
@@ -115,7 +115,7 @@ Non-Normality – Histogram: a right-skewed distribution, plotted as a histogram
 sns.distplot(df_clean['orbit_uncertainity'])
 plt.show()
 ```
-<img src="{{ site.url }}{{ site.baseurl }}/images/perceptron/linsep.jpg" alt="linearly separable data">
+<img src="{{ site.url }}{{ site.baseurl }}/images/sagemaker/sagemaker3.jpg" alt="sagemaker training">
 
 ### Observation:
 This is a bi-model distribution and the data can reveal a shift in the process.For Processes that display this distribution, it is normally understood that there are 2 independent sources of Variation that result in Peaks within the data.
@@ -134,7 +134,7 @@ correlations = df_clean[['hazardous','neo_reference_id','name','absolute_magnitu
 sns.heatmap(correlations, cmap=cmap)
 plt.show()
 ```
-<img src="{{ site.url }}{{ site.baseurl }}/images/perceptron/linsep.jpg" alt="linearly separable data">
+<img src="{{ site.url }}{{ site.baseurl }}/images/sagemaker/sagemaker5.jpg" alt="sagemaker training">
 
 Next, we save the data to notebook instance, create  features and label and convert to protobuf recordIO format.
 
@@ -154,7 +154,7 @@ display(df_clean.describe())
 # we will also summarize the categorical field hazardous
 display(df_clean.hazardous.value_counts())
 ```
-<img src="{{ site.url }}{{ site.baseurl }}/images/perceptron/linsep.jpg" alt="linearly separable data">
+<img src="{{ site.url }}{{ site.baseurl }}/images/sagemaker/sagemaker4.jpg" alt="sagemaker training">
 
 ## Create Features and Labels
 #### Split the data into 80% training, 10% validation and 10% testing.
