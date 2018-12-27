@@ -134,7 +134,7 @@ correlations = df_clean[['hazardous','neo_reference_id','name','absolute_magnitu
 sns.heatmap(correlations, cmap=cmap)
 plt.show()
 ```
-<img src="{{ site.url }}{{ site.baseurl }}/images/sagemaker/sagemaker5.jpg" alt="sagemaker training">
+<img src="{{ site.url }}{{ site.baseurl }}/images/sagemaker/sagemaker4.jpg" alt="sagemaker training">
 
 Next, we save the data to notebook instance, create  features and label and convert to protobuf recordIO format.
 
@@ -154,7 +154,7 @@ display(df_clean.describe())
 # we will also summarize the categorical field hazardous
 display(df_clean.hazardous.value_counts())
 ```
-<img src="{{ site.url }}{{ site.baseurl }}/images/sagemaker/sagemaker4.jpg" alt="sagemaker training">
+<img src="{{ site.url }}{{ site.baseurl }}/images/sagemaker/sagemaker5.jpg" alt="sagemaker training">
 
 ## Create Features and Labels
 #### Split the data into 80% training, 10% validation and 10% testing.
