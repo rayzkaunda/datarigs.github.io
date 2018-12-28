@@ -48,8 +48,36 @@ val customersDf = spark.read.format("csv").option("sep", ",").option("inferSchem
 ```
 <img src="{{ site.url }}{{ site.baseurl }}/images/k-means/k-means1.jpg" alt="dataframe">
 
-Now lets register the dataframe to use SQL queries for visualizations.
+Now lets register the dataframe to use Spark SQL queries for visualizations. With the Zeppelin Notebook, you can display query results in table or chart formats. Here are some example Spark SQL queries on the customers dataset.
+### What is the nature of payment methods in relation to churn?
 ```scala
 customersDf.createOrReplaceTempView("customersDf")
 ```
 <img src="{{ site.url }}{{ site.baseurl }}/images/k-means/k-means2.jpg" alt="dataframe">
+
+In the pie chart we can see the different payment methods and the percentage of customer churn for each. For example, for credit card and automatic payments the churn was 2.27% and for bank tranfers it was 4.41%. Furthermore, the churn for mailed checks was 4.67% and electronic checks was 13.22%. From this we can form a hypothesis of our dataset and before performing our analysis.
+
+### HYPOTHESIS TESTING IN APACHE SPARK
+Our hypothesis based on the dataset is that customers who have signed up for automatic bill payments either through credit cards, bank tranfers, and those with non-automatic payemnts through mailed checks are less likely to churn compared to customers who pay by electronic check. Before we perform hypotheis testing we have to transform our dataframe into numerical format and then into a feature vector column. Fist we use the StringIndexer transformer to index all categorical columns and the the VectorAssembler to transform our features columns to a single vector column as required for hypothesis testing and the K-means algorithm.
+
+```scala
+//Index categorical columns
+ val featureCol = customersDf.columns
+   val indexers = featureCol.map { colName =>
+   new StringIndexer().setInputCol(colName).setOutputCol(colName + "_indexed")
+   }
+
+
+//Define pipeline and transform dataset
+   val pipeline = new Pipeline().setStages(indexers)      
+   val newDF = pipeline.fit(customersDf).transform(customersDf)
+   newDF.show(5)
+
+// Select only the indexed columns
+val assembler = new VectorAssembler().setInputCols(Array("customerID_indexed", "gender_indexed", "seniorCitizen_indexed", "Partner_indexed", "Dependents_indexed", "tenure_indexed", "PhoneService_indexed", "MultipleLines_indexed", "InternetService_indexed", "OnlineSecurity_indexed" , "OnlineBackup_indexed",
+"DeviceProtection_indexed", "TechSupport_indexed", "StreamingTV_indexed", "Contract_indexed", "PaperlessBilling_indexed", "PaymentMethod_indexed", "MonthlyCharges_indexed", "TotalCharges_indexed")).setOutputCol("features")
+
+val output = assembler.transform(featureDf)
+output.show(5)   
+```
+<img src="{{ site.url }}{{ site.baseurl }}/images/k-means/k-means4.jpg" alt="dataframe">
