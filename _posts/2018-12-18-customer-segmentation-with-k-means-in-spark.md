@@ -80,4 +80,4 @@ val assembler = new VectorAssembler().setInputCols(Array("customerID_indexed", "
 val output = assembler.transform(featureDf)
 output.show(5)   
 ```
-<img src="{{ site.url }}{{ site.baseurl }}/images/k-means/k-means4.jpg" alt="dataframe">
+<img src="{{ site.url }}{{ site.baseurl }}/images/k-means/k-means3.jpg" alt="dataframe">
