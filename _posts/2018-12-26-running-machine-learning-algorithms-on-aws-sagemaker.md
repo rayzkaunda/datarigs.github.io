@@ -418,7 +418,10 @@ Our accuracy on the model
 Prediction Accuracy: 82.0 %
 Baseline Accuracy: 82.0 %  
 
-Finally run the following to delete the endpoint to avoid charges and stop(if you want to keep the notebook don't delete it) the notebook instance in the Sagemaker console(This does not delete the notebook).
+Finally, run the following to delete the endpoint instance to avoid charges and stop the notebook instance(if you want to keep the notebook don't delete the notebook instance) in the Sagemaker console(This does not delete the notebook).
 ```python
 sm.delete_endpoint(EndpointName=linear_endpoint)
 ```
+### Conclusion
+In this post,  we learned the basic foundations loading data, training, evaluation and deploying a model in AWS SageMaker. The key takeways.
+- Data preprocessing: The data in the feature  and label columns have to be float32 format to convert to recordIO-wrapped protobuf format. The label column has be the     first in the dataframe as expected by most SageMaker algorithms.
