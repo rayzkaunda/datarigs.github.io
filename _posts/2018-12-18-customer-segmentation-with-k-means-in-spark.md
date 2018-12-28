@@ -81,3 +81,43 @@ val output = assembler.transform(featureDf)
 output.show(5)   
 ```
 <img src="{{ site.url }}{{ site.baseurl }}/images/k-means/k-means3.jpg" alt="dataframe">
+
+
+```scala
+val df = output.select("features", "Churn_indexed").withColumnRenamed("Churn_indexed", "label")
+//split data set to train, test
+val Array(train, test) = df.randomSplit(Array(0.7,0.3))
+```
+Parameter selection
+The best choice of k depends upon the data; generally, larger values of k reduces effect of the noise on the classification, but make boundaries between classes less distinct. A good k can be selected by various heuristic techniques. The special case where the class is predicted to be the class of the closest training sample (i.e. when k = 1) is called the nearest neighbor algorithm.
+
+The accuracy of the k-NN algorithm can be severely degraded by the presence of noisy or irrelevant features, or if the feature scales are not consistent with their importance. Much research effort has been put into selecting or scaling features to improve classification. A particularly popular approach is the use of evolutionary algorithms to optimize feature scaling. Another popular approach is to scale features by the mutual information of the training data with the training classes.
+
+In binary (two class) classification problems, it is helpful to choose k to be an odd number as this avoids tied votes. One popular way of choosing the empirically optimal k in this setting is via bootstrap method.
+
+
+```scala
+// Trains a k-means model.
+
+val kmeans = new KMeans().setK(5).setSeed(1L).setFeaturesCol("features").setPredictionCol("prediction")
+val model = kmeans.fit(train)
+
+// Make predictions
+val segments = model.transform(test)
+
+//here the prediction column shows the cluster
+segments.show(5)
+```
+<img src="{{ site.url }}{{ site.baseurl }}/images/k-means/k-means4.jpg" alt="dataframe">
+
+Now lets evaluate the Silhouette score
+
+// Evaluate clustering by computing Silhouette score
+
+```scala
+val evaluator = new ClusteringEvaluator()
+
+val silhouette = evaluator.evaluate(segments)
+println(s"Silhouette with squared euclidean distance = $silhouette")
+```
+<img src="{{ site.url }}{{ site.baseurl }}/images/k-means/k-means5.jpg" alt="dataframe">
