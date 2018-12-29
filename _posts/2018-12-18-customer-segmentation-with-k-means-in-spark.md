@@ -110,9 +110,7 @@ segments.show(5)
 ```
 <img src="{{ site.url }}{{ site.baseurl }}/images/k-means/k-means4.jpg" alt="dataframe">
 
-Now lets evaluate the Silhouette score
-
-// Evaluate clustering by computing Silhouette score
+Now lets evaluate clustering by computing Silhouette score
 
 ```scala
 val evaluator = new ClusteringEvaluator()
@@ -120,9 +118,42 @@ val evaluator = new ClusteringEvaluator()
 val silhouette = evaluator.evaluate(segments)
 println(s"Silhouette with squared euclidean distance = $silhouette")
 ```
-<img src="{{ site.url }}{{ site.baseurl }}/images/k-means/k-means5.jpg" alt="dataframe">
+<img src="{{ site.url }}{{ site.baseurl }}/images/k-means/k-means6.jpg" alt="dataframe">
 
 Silhouette refers to a method of interpretation and validation of consistency within clusters of data. The technique provides a succinct graphical representation of how well each object lies within its cluster.
 
 The silhouette value is a measure of how similar an object is to its own cluster (cohesion) compared to other clusters (separation). The silhouette ranges from −1 to +1, where a high value indicates that the object is well matched to its own cluster and poorly matched to neighboring clusters. If most objects have a high value, then the clustering configuration is appropriate. If many points have a low or negative value, then the clustering configuration may have too many or too few clusters.
 The silhouette can be calculated with any distance metric, such as the Euclidean distance or the Manhattan distance.
+
+### Analyzing Results
+
+<img src="{{ site.url }}{{ site.baseurl }}/images/k-means/k-means6.jpg" alt="dataframe">
+
+For a better analysis we need to join the original dataframe with the results.
+
+```scala
+import org.apache.spark.ml.attribute.Attribute
+import org.apache.spark.ml.feature.{IndexToString, StringIndexer}
+
+val resultsDF = featureDf.join(segments, featureDf.col("Churn_indexed") === segments.col("Churn_indexed"))
+
+// join the three datasets(original, indexed and k-means results) for better analysis
+// first we change the customer_id column back to string type in the indexed dataframe(featureDf) then join on customer_id
+val converter = new IndexToString().setInputCol("customerID_indexed").setOutputCol("customerID")
+
+val converted = converter.transform(featureDf)
+
+// join first 2 dataframes
+val resultsData = customersDf.join(segments, customersDf.col("customerID") ===customersDf.col("customerID"), "cross")
+
+// join the 3 datasets(original, indexed and k-means results) for better analysis
+
+val finalDataset = resultsData.join(converted, resultsData.col("customerID") ===resultsData.col("customerID"), "cross")
+finalDataset.show(5)
+```
+<img src="{{ site.url }}{{ site.baseurl }}/images/k-means/k-means6.jpg" alt="dataframe">
+
+```scala
+// our 3 dataframes have been joined and then create a temp view for SQL queries
+finalDataset.createOrReplaceTempView("finalDataset")
+```
