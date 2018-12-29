@@ -127,7 +127,7 @@ The silhouette can be calculated with any distance metric, such as the Euclidean
 
 ### Analyzing Results
 
-<img src="{{ site.url }}{{ site.baseurl }}/images/k-means/k-means6.jpg" alt="dataframe">
+<img src="{{ site.url }}{{ site.baseurl }}/images/k-means/k-means7.jpg" alt="dataframe">
 
 For a better analysis we need to join the original dataframe with the results.
 
@@ -151,7 +151,7 @@ val resultsData = customersDf.join(segments, customersDf.col("customerID") ===cu
 val finalDataset = resultsData.join(converted, resultsData.col("customerID") ===resultsData.col("customerID"), "cross")
 finalDataset.show(5)
 ```
-<img src="{{ site.url }}{{ site.baseurl }}/images/k-means/k-means6.jpg" alt="dataframe">
+<img src="{{ site.url }}{{ site.baseurl }}/images/k-means/k-means8.jpg" alt="dataframe">
 
 ```scala
 // our 3 dataframes have been joined and then create a temp view for SQL queries
