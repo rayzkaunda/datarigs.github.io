@@ -57,8 +57,8 @@ customersDf.createOrReplaceTempView("customersDf")
 
 In the pie chart we can see the different payment methods and the percentage of customer churn for each. For example, for credit card and automatic payments the churn was 2.27% and for bank tranfers it was 4.41%. Furthermore, the churn for mailed checks was 4.67% and electronic checks was 13.22%. From this we can form a hypothesis of our dataset and before performing our analysis.
 
-### HYPOTHESIS TESTING IN APACHE SPARK
-Our hypothesis based on the dataset is that customers who have signed up for automatic bill payments either through credit cards, bank tranfers, and those with non-automatic payemnts through mailed checks are less likely to churn compared to customers who pay by electronic check. Before we perform hypotheis testing we have to transform our dataframe into numerical format and then into a feature vector column. Fist we use the StringIndexer transformer to index all categorical columns and the the VectorAssembler to transform our features columns to a single vector column as required for hypothesis testing and the K-means algorithm.
+### TRAIN K-MEANS
+Fist we use the StringIndexer transformer to index all categorical columns and the the VectorAssembler to transform our features columns to a single vector column as required for hypothesis testing and the K-means algorithm.
 
 ```scala
 //Index categorical columns
@@ -121,3 +121,8 @@ val silhouette = evaluator.evaluate(segments)
 println(s"Silhouette with squared euclidean distance = $silhouette")
 ```
 <img src="{{ site.url }}{{ site.baseurl }}/images/k-means/k-means5.jpg" alt="dataframe">
+
+Silhouette refers to a method of interpretation and validation of consistency within clusters of data. The technique provides a succinct graphical representation of how well each object lies within its cluster.
+
+The silhouette value is a measure of how similar an object is to its own cluster (cohesion) compared to other clusters (separation). The silhouette ranges from −1 to +1, where a high value indicates that the object is well matched to its own cluster and poorly matched to neighboring clusters. If most objects have a high value, then the clustering configuration is appropriate. If many points have a low or negative value, then the clustering configuration may have too many or too few clusters.
+The silhouette can be calculated with any distance metric, such as the Euclidean distance or the Manhattan distance.
