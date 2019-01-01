@@ -2,7 +2,7 @@
 title: Running Machine Learning Algorithms on AWS Sagemaker
 tags: [aws-sagemaker]
 header:
-  image: "images/sagemaker/sagemakerphases.jpg"
+  image: "images/sagemaker/sagemakerheader.jpg"
 excerpt: "AWS Sagemaker"
 mathjax: "true"
 ---
