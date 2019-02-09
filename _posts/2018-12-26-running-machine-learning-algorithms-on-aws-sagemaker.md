@@ -25,7 +25,7 @@ Data Type Number of columns ID 2 Continuous 30 Categorical 2 DateTime 2 Nominal 
 
 Transformed/Wrangled data: Comma Separated Values(csv)
 * Basic setup for using SageMaker.
-* converting datasets to protobuf format used by the Amazon SageMaker algorithms and uploading to S3.
+* Converting datasets to protobuf format used by the Amazon SageMaker algorithms and uploading to S3.
 * Training SageMaker's linear learner on the data set.
 * Hosting the trained model.
 * Scoring using the trained model.
@@ -44,7 +44,7 @@ from sagemaker import get_execution_role
 # get execution role
 role = get_execution_role()
 # enter your s3 bucket where you will copy data and model artifacts
-bucket = 'datastorez'
+bucket = 'bucket'
 # place to upload training files within the bucket
 prefix = 'sagemaker/DEMO-asteroid-prediction'
 ```
@@ -65,7 +65,7 @@ import sagemaker.amazon.common as smac
 
 #Let's download the data and save it in the local folder with the name data.csv and take a look at itself.
 
-data = pd.read_csv('https://s3.amazonaws.com/datastorez/nasa_asteroids.csv', header = 0)
+data = pd.read_csv('<S3 BUCKET>nasa_asteroids.csv', header = 0)
 data.columns = data.columns.str.strip().str.lower().str.replace(' ', '_').str.replace('(', '').str.replace(')', '')
 
 # list the columns in the df
