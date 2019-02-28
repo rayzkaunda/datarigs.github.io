@@ -124,40 +124,39 @@ In the dataset there are three diagnoses, one main and two secondary, containing
 
 <img src="{{ site.url }}{{ site.baseurl }}/images/d-patients/summary_icd_codes.jpeg" alt="summary">
 
-
-
-Are any of the columns correlated?
+Change diagnosis column names
 ```python
-cmap = sns.diverging_palette(0, 255, sep=1, n=256, as_cmap=True)
-correlations = df_clean[['hazardous','neo_reference_id','name','absolute_magnitude','est_dia_in_kmmin','est_dia_in_kmmax','est_dia_in_mmin',
- 'est_dia_in_mmax', 'est_dia_in_milesmin', 'est_dia_in_milesmax', 'est_dia_in_feetmin', 'est_dia_in_feetmax',
- 'relative_velocity_km_per_sec', 'relative_velocity_km_per_hr', 'miles_per_hour', 'miss_dist.astronomical',
- 'miss_dist.lunar', 'miss_dist.kilometers', 'miss_dist.miles', 'orbit_id',
- 'orbit_uncertainity', 'minimum_orbit_intersection', 'jupiter_tisserand_invariant', 'epoch_osculation', 'eccentricity',
- 'semi_major_axis', 'inclination', 'asc_node_longitude', 'orbital_period', 'perihelion_distance','perihelion_arg', 'aphelion_dist',
- 'perihelion_time', 'mean_anomaly', 'mean_motion']].corr()
-sns.heatmap(correlations, cmap=cmap)
-plt.show()
+#change diagnosis column names
+df['d1'] = df['diag_1']
+df['d2'] = df['diag_2']
+df['d3'] = df['diag_3']
 ```
-<img src="{{ site.url }}{{ site.baseurl }}/images/sagemaker/sagemaker4.jpg" alt="sagemaker training">
-
-Next, we save the data to notebook instance, create  features and label and convert to protobuf recordIO format.
+Next we are grouping the digonosis columns based on the ICD-10 codes.
 
 ```python
-# save the data
-df.to_csv("data.csv", sep=',', index=False)
-
-# print the shape of the data file
-print(df_clean.shape)
-
-# show the top few rows
-display(df_clean.head())
-
-# describe the data object
-display(df_clean.describe())
-
-# we will also summarize the categorical field hazardous
-display(df_clean.hazardous.value_counts())
+# Regrouping the main diagnosis
+df['d1'] = df.apply(lambda row: 1 if (row['diag_1'][0:3].zfill(3) >= '390') and (row['diag_1'][0:3].zfill(3) <= '459' ) or  (row['diag_1'][0:3].zfill(3) == '785' ) else row['d1'], axis=1)
+df['d1'] = df.apply(lambda row: 2 if (row['diag_1'][0:3].zfill(3) >= '460') and (row['diag_1'][0:3].zfill(3) <= '519' ) or  (row['diag_1'][0:3].zfill(3) == '786' ) else row['d1'], axis=1)
+df['d1'] = df.apply(lambda row: 3 if (row['diag_1'][0:3].zfill(3) >= '520') and (row['diag_1'][0:3].zfill(3) <= '579' ) or  (row['diag_1'][0:3].zfill(3) == '787' ) else row['d1'], axis=1)
+df['d1'] = df.apply(lambda row: 4 if (row['diag_1'][0:3].zfill(3) == '250') else row['d1'], axis=1)
+df['d1'] = df.apply(lambda row: 5 if (row['diag_1'][0:3].zfill(3) >= '800') and (row['diag_1'][0:3].zfill(3) <= '999' ) else row['d1'], axis=1)
+df['d1'] = df.apply(lambda row: 6 if (row['diag_1'][0:3].zfill(3) >= '710') and (row['diag_1'][0:3].zfill(3) <= '739' ) else row['d1'], axis=1)
+df['d1'] = df.apply(lambda row: 7 if (row['diag_1'][0:3].zfill(3) >= '580') and (row['diag_1'][0:3].zfill(3) <= '629' ) or  (row['diag_1'][0:3].zfill(3) == '788' ) else row['d1'], axis=1)
+df['d1'] = df.apply(lambda row: 8 if (row['diag_1'][0:3].zfill(3) >= '140') and (row['diag_1'][0:3].zfill(3) <= '239' ) else row['d1'], axis=1)
+df['d1'] = df.apply(lambda row: 9 if (row['diag_1'][0:3].zfill(3) >= '790') and (row['diag_1'][0:3].zfill(3) <= '799' ) or  (row['diag_1'][0:3].zfill(3) == '780' ) or  (row['diag_1'][0:3].zfill(3) == '781' ) or  (row['diag_1'][0:3].zfill(3) == '784' ) else row['d1'], axis=1)
+df['d1'] = df.apply(lambda row: 10 if (row['diag_1'][0:3].zfill(3) >= '240') and (row['diag_1'][0:3].zfill(3) <= '249' ) else row['d1'], axis=1)
+df['d1'] = df.apply(lambda row: 10 if (row['diag_1'][0:3].zfill(3) >= '251') and (row['diag_1'][0:3].zfill(3) <= '279' ) else row['d1'], axis=1)
+df['d1'] = df.apply(lambda row: 11 if (row['diag_1'][0:3].zfill(3) >= '680') and (row['diag_1'][0:3].zfill(3) <= '709' ) or  (row['diag_1'][0:3].zfill(3) == '782' ) else row['d1'], axis=1)
+df['d1'] = df.apply(lambda row: 12 if (row['diag_1'][0:3].zfill(3) >= '001') and (row['diag_1'][0:3].zfill(3) <= '139' ) else row['d1'], axis=1)
+df['d1'] = df.apply(lambda row: 13 if (row['diag_1'][0:3].zfill(3) >= '290') and (row['diag_1'][0:3].zfill(3) <= '319' ) else row['d1'], axis=1)
+df['d1'] = df.apply(lambda row: 13 if (row['diag_1'][0:1] >= 'E') and (row['diag_1'][0:1] <= 'V' ) else row['d1'], axis=1)
+df['d1'] = df.apply(lambda row: 13 if (row['diag_1'][0:3].zfill(3) >= '280') and (row['diag_1'][0:3].zfill(3) <= '289' ) else row['d1'], axis=1)
+df['d1'] = df.apply(lambda row: 13 if (row['diag_1'][0:3].zfill(3) >= '320') and (row['diag_1'][0:3].zfill(3) <= '359' ) else row['d1'], axis=1)
+df['d1'] = df.apply(lambda row: 13 if (row['diag_1'][0:3].zfill(3) >= '630') and (row['diag_1'][0:3].zfill(3) <= '679' ) else row['d1'], axis=1)
+df['d1'] = df.apply(lambda row: 13 if (row['diag_1'][0:3].zfill(3) >= '360') and (row['diag_1'][0:3].zfill(3) <= '389' ) else row['d1'], axis=1)
+df['d1'] = df.apply(lambda row: 13 if (row['diag_1'][0:3].zfill(3) >= '740') and (row['diag_1'][0:3].zfill(3) <= '759' ) else row['d1'], axis=1)
+df['d1'] = df.apply(lambda row: 0 if (row['diag_1'][0:3].zfill(3)  == '783' or row['diag_1'][0:3].zfill(3)  == '789') else row['d1'], axis=1)
+df['d1'] = df.apply(lambda row: -1 if (row['diag_1'][0:1] == '?') else row['d1'], axis=1))
 ```
 <img src="{{ site.url }}{{ site.baseurl }}/images/sagemaker/sagemaker5.jpg" alt="sagemaker training">
 
