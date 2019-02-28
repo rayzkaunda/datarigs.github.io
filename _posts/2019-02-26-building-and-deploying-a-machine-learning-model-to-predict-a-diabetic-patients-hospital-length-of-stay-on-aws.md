@@ -53,12 +53,10 @@ import boto3
 import re
 from sagemaker import get_execution_role
 
-# get execution role
 role = get_execution_role()
-# enter your s3 bucket where you will copy data and model artifacts
-bucket = 'bucket'
-# place to upload training files within the bucket
-prefix = 'sagemaker/DEMO-asteroid-prediction'
+
+bucket = 'datastorez'# enter your s3 bucket where you will copy data and model artifacts
+prefix = 'sagemaker/Diabetic-prediction' # place to upload training files within the bucket
 ```
 Next, we import the necessary imports for our model and visualizations.
 
@@ -66,6 +64,7 @@ Next, we import the necessary imports for our model and visualizations.
 #imports
 
 import pandas as pd
+pd.set_option('display.max_columns',100)
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -75,10 +74,10 @@ import json
 import sagemaker.amazon.common as smac
 
 
-#Let's download the data and save it in the local folder with the name data.csv and take a look at itself.
+#Let's load the data from s3.
 
-data = pd.read_csv('<S3 BUCKET>nasa_asteroids.csv', header = 0)
-data.columns = data.columns.str.strip().str.lower().str.replace(' ', '_').str.replace('(', '').str.replace(')', '')
+df = pd.read_csv('s3://<bucket>/diabetic_data.csv', header = 0, sep=',')
+df.head(5)
 
 # list the columns in the df
 datalist = data.columns.tolist()
