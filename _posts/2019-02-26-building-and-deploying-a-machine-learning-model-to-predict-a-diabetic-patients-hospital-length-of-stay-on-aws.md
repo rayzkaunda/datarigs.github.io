@@ -85,9 +85,9 @@ df.head(5)
 
 ```python
 # print the shape of the data file
-print(df_clean.shape)
+print(df.shape)
 ```
-(4687, 35)
+(101766, 50)
 
 ### Data Prepocessing and Cleanup
 ---
@@ -95,17 +95,16 @@ I used to hate cleaning and wrangling data but now it's the love of my life. I s
 
 The data contains some columns with missing values and non-numeric columns and will need alot of clean up and prepocessing before feeding it to our model.
 
-```python
-# Make plots
-plt.rcParams['figure.figsize'] = (20, 9)
-sns.distplot(df_clean['absolute_magnitude'])
-plt.show()
-```
+#### Me when I come across dirty data
 <img src="{{ site.url }}{{ site.baseurl }}/images/d-patients/d_patients_data_cleaning.gif" alt="data cleaning">
-### Observation:
-This histogram is a normal distribution as it is bell shaped.
 
-<img src="{{ site.url }}{{ site.baseurl }}/images/sagemaker/sagemaker2.jpg" alt="sagemaker training">
+First we are going to  convert  the categorical columns to numerical columns and then clean all the other columns we are going to use in our model.
+
+```python
+#clean age column to 10 categories
+df['age_group'] = df['age'].replace({'[0-10)': 0, '[10-20)': 1, '[20-30)': 2, '[30-40)': 3, '[40-50)': 4, '[50-60)': 5, '[60-70)': 6, '[70-80)': 7, '[80-90)': 8, '[90-100)': 9})
+#will leave age column for now for visualization but will drop it later  
+```
 
 ### Observation:
 Non-Normality – Histogram: a right-skewed distribution, plotted as a histogram. The histogram is not bell-shaped, indicating that the distribution is not normal.
