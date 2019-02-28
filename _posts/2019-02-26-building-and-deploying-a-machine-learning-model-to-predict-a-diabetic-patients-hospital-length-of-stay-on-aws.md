@@ -30,26 +30,25 @@ Predictive analytics is an increasingly important tool in the healthcare field s
 In this project am going to use the Health Facts database(Cerner Corporation, Kansas City, MO), a national data
 warehouse that collects comprehensive clinical records across hospitals throughout the United States. Health Facts is a voluntary program offered to organizations which use the Cerner Electronic Health Record System. The database contains data systematically collected from participating institutions electronic medical records and includes encounter data (emergency, outpatient, and inpatient), provider specialty, demographics (age, sex, and race), diagnoses and in-hospital procedures documented by ICD-9-CM codes, laboratory data, pharmacy data, in-hospital mortality, and hospital characteristics. All data were deidentified in compliance with the Health Insurance Portability and Accountability Act of 1996 before being provided to the investigators. Continuity of patient encounters within the same health system (EHR
 system) is preserved.
+The dataset consists of 101766 encounters of diabetic patients with 50 attributes including age, race, weight, whether a patient was readmitted  or not and length of hospital stay as well as various medications and tests administered during an encounter.
 
-Dimension:4687*40
+Dimension:101766*50
 
-Size:2.4 MB
+# Our Workflow
+1. [Setup](#Setup)
+1. [Load dataset](#Load dataset)
+1. [Data](#Data)
+1. [Train](#Train)
+1. [Host](#Host)
+1. [Predict](#Predict)
+1. [Extensions](#Extensions)
 
-Data Types:
+## Setup
 
-Data Type Number of columns ID 2 Continuous 30 Categorical 2 DateTime 2 Nominal 1 Raw Data: API
+Let's start by specifying:
 
-Transformed/Wrangled data: Comma Separated Values(csv)
-* Basic setup for using SageMaker.
-* Converting datasets to protobuf format used by the Amazon SageMaker algorithms and uploading to S3.
-* Training SageMaker's linear learner on the data set.
-* Hosting the trained model.
-* Scoring using the trained model.
-
-
-### Loading  Data
-In order to train your model you first have to load your data into S3. After loading your data into S3 you must create a a role in IAM to give your Sagemaker instance access to the data. According to the documentation, Most Sagemaker algorithms requires that your data be in CSV format after you've done your preprocessing before uploading data to S3. Most Amazon SageMaker algorithms work best when you use the optimized protobuf recordIO format for the training data. Using this format allows you to take advantage of Pipe mode when training the algorithms that support it. In Pipe mode, your training job streams data directly from Amazon S3. Streaming can provide faster start times for training jobs and better throughput. With Pipe mode, you also reduce the size of the Amazon Elastic Block Store volumes for your training instances. It is also important that you create the S3 buckets in the same Amazon region as your notebook instance. Otherwise Amazon will throw an error saying it cannot find your data. Fortunately SageMaker provides an easy way to convert your CSV to protobuf recordIO format. Lets load the dataset and specify the bucket to load to load model artifacts.
-
+* The SageMaker role arn used to give learning and hosting access to your data. The snippet below will use the same role used by your SageMaker notebook instance, if you're using other.  Otherwise, specify the full ARN of a role with the SageMakerFullAccess policy attached.
+* The S3 bucket that you want to use for training and storing model objects.
 ```python
 # Load dataset
 import os
@@ -64,6 +63,21 @@ bucket = 'bucket'
 # place to upload training files within the bucket
 prefix = 'sagemaker/DEMO-asteroid-prediction'
 ```
+
+
+
+
+
+### Loading  Data
+In order to train your model you first have to load your data into S3. After loading your data into S3 you must create a a role in IAM to give your Sagemaker instance access to the data. According to the documentation, Most Sagemaker algorithms requires that your data be in CSV format after you've done your preprocessing before uploading data to S3. Most Amazon SageMaker algorithms work best when you use the optimized protobuf recordIO format for the training data. Using this format allows you to take advantage of Pipe mode when training the algorithms that support it. In Pipe mode, your training job streams data directly from Amazon S3. Streaming can provide faster start times for training jobs and better throughput. With Pipe mode, you also reduce the size of the Amazon Elastic Block Store volumes for your training instances. It is also important that you create the S3 buckets in the same Amazon region as your notebook instance. Otherwise Amazon will throw an error saying it cannot find your data. Fortunately SageMaker provides an easy way to convert your CSV to protobuf recordIO format. Lets load the dataset and specify the bucket to load to load model artifacts.
+
+## Load the Data
+
+In this case the data is in csv format and stored on a data lake on AWS's S3. In order to perform implement cloud based models and take advantage of the low costs the data should be uploaded to S3.
+
+Let's download the data and save it in the local folder with the name data.csv and take a look at it.
+
+
 Next, we import the necessary imports for our model and visualizations.
 
 ```python
@@ -79,28 +93,11 @@ import json
 import sagemaker.amazon.common as smac
 
 
-#Let's download the data and save it in the local folder with the name data.csv and take a look at itself.
-
-data = pd.read_csv('<S3 BUCKET>nasa_asteroids.csv', header = 0)
-data.columns = data.columns.str.strip().str.lower().str.replace(' ', '_').str.replace('(', '').str.replace(')', '')
-
-# list the columns in the df
-datalist = data.columns.tolist()
-# Assign new position for label column(hazardous) as required by Sagemaker's algorithms
-datalist.insert(0, datalist.pop(datalist.index('hazardous')))
-df = data.reindex(columns= datalist)
-df.columns.tolist()
-
-# specify columns extracted from dataset
-df.columns = ['hazardous','neo_reference_id','name','absolute_magnitude','est_dia_in_kmmin','est_dia_in_kmmax','est_dia_in_mmin',
- 'est_dia_in_mmax', 'est_dia_in_milesmin', 'est_dia_in_milesmax', 'est_dia_in_feetmin', 'est_dia_in_feetmax','close_approach_date',
- 'epoch_date_close_approach', 'relative_velocity_km_per_sec', 'relative_velocity_km_per_hr', 'miles_per_hour', 'miss_dist.astronomical',
- 'miss_dist.lunar', 'miss_dist.kilometers', 'miss_dist.miles', 'orbiting_body', 'orbit_id', 'orbit_determination_date',
- 'orbit_uncertainity', 'minimum_orbit_intersection', 'jupiter_tisserand_invariant', 'epoch_osculation', 'eccentricity',
- 'semi_major_axis', 'inclination', 'asc_node_longitude', 'orbital_period', 'perihelion_distance','perihelion_arg', 'aphelion_dist',
- 'perihelion_time', 'mean_anomaly', 'mean_motion', 'equinox']
+#Let's load the data and from s3 and take a look at it.
+df = pd.read_csv('s3://<s3-bucket>/diabetic_data.csv', header = 0, sep=',')
+df.head(5)
  ```
- For the sake of this tutorial we drop some columns containing dates but if your model requires you have to preprocess your dates to strings.
+For the sake of this tutorial we drop some columns containing dates but if your model requires you have to preprocess your dates to strings.
 
 ```python
 df_clean = df.drop(['close_approach_date', 'orbiting_body', 'orbit_determination_date','epoch_date_close_approach', 'orbit_determination_date', 'equinox'], axis=1)
