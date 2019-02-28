@@ -158,50 +158,59 @@ df['d1'] = df.apply(lambda row: 13 if (row['diag_1'][0:3].zfill(3) >= '740') and
 df['d1'] = df.apply(lambda row: 0 if (row['diag_1'][0:3].zfill(3)  == '783' or row['diag_1'][0:3].zfill(3)  == '789') else row['d1'], axis=1)
 df['d1'] = df.apply(lambda row: -1 if (row['diag_1'][0:1] == '?') else row['d1'], axis=1))
 ```
-<img src="{{ site.url }}{{ site.baseurl }}/images/sagemaker/sagemaker5.jpg" alt="sagemaker training">
 
-## Create Features and Labels
-#### Split the data into 80% training, 10% validation and 10% testing.
+### Regrouping of the first secondary diagnosis
+
 ```python
-rand_split = np.random.rand(len(df_clean))
-train_list = rand_split < 0.8
-val_list = (rand_split >= 0.8) & (rand_split < 0.9)
-test_list = rand_split >= 0.9
-
-data_train = df_clean[train_list]
-data_val = df_clean[val_list]
-data_test = df_clean[test_list]
-
-val_y = data_val.iloc[:,0].astype(int).as_matrix();
-val_X = data_val.iloc[1:3,:].as_matrix();
-
-train_y = data_train.iloc[:,0].astype(int).as_matrix();
-train_X = data_train.iloc[:,3:].as_matrix();
-
-val_y = data_val.iloc[:,0].astype(int).as_matrix();
-val_X = data_val.iloc[:,3:].as_matrix();
-
-test_y = data_test.iloc[:,0].astype(int).as_matrix();
-test_X = data_test.iloc[:,3:].as_matrix();
+# Regrouping of the first secondary diagnosis
+df['d2'] = df.apply(lambda row: 1 if (row['diag_2'][0:3].zfill(3) >= '390') and (row['diag_2'][0:3].zfill(3) <= '459' ) or  (row['diag_2'][0:3].zfill(3) == '785' ) else row['d2'], axis=1)
+df['d2'] = df.apply(lambda row: 2 if (row['diag_2'][0:3].zfill(3) >= '460') and (row['diag_2'][0:3].zfill(3) <= '519' ) or  (row['diag_2'][0:3].zfill(3) == '786' ) else row['d2'], axis=1)
+df['d2'] = df.apply(lambda row: 3 if (row['diag_2'][0:3].zfill(3) >= '520') and (row['diag_2'][0:3].zfill(3) <= '579' ) or  (row['diag_2'][0:3].zfill(3) == '787' ) else row['d2'], axis=1)
+df['d2'] = df.apply(lambda row: 4 if (row['diag_2'][0:3].zfill(3) == '250') else row['d2'], axis=1)
+df['d2'] = df.apply(lambda row: 5 if (row['diag_2'][0:3].zfill(3) >= '800') and (row['diag_2'][0:3].zfill(3) <= '999' ) else row['d2'], axis=1)
+df['d2'] = df.apply(lambda row: 6 if (row['diag_2'][0:3].zfill(3) >= '710') and (row['diag_2'][0:3].zfill(3) <= '739' ) else row['d2'], axis=1)
+df['d2'] = df.apply(lambda row: 7 if (row['diag_2'][0:3].zfill(3) >= '580') and (row['diag_2'][0:3].zfill(3) <= '629' ) or  (row['diag_2'][0:3].zfill(3) == '788' ) else row['d2'], axis=1)
+df['d2'] = df.apply(lambda row: 8 if (row['diag_2'][0:3].zfill(3) >= '140') and (row['diag_2'][0:3].zfill(3) <= '239' ) else row['d2'], axis=1)
+df['d2'] = df.apply(lambda row: 9 if (row['diag_2'][0:3].zfill(3) >= '790') and (row['diag_2'][0:3].zfill(3) <= '799' ) or  (row['diag_2'][0:3].zfill(3) == '780' ) or  (row['diag_2'][0:3].zfill(3) == '781' ) or  (row['diag_2'][0:3].zfill(3) == '784' ) else row['d2'], axis=1)
+df['d2'] = df.apply(lambda row: 10 if (row['diag_2'][0:3].zfill(3) >= '240') and (row['diag_2'][0:3].zfill(3) <= '249' ) else row['d2'], axis=1)
+df['d2'] = df.apply(lambda row: 10 if (row['diag_2'][0:3].zfill(3) >= '251') and (row['diag_2'][0:3].zfill(3) <= '279' ) else row['d2'], axis=1)
+df['d2'] = df.apply(lambda row: 11 if (row['diag_2'][0:3].zfill(3) >= '680') and (row['diag_2'][0:3].zfill(3) <= '709' ) or  (row['diag_2'][0:3].zfill(3) == '782' ) else row['d2'], axis=1)
+df['d2'] = df.apply(lambda row: 12 if (row['diag_2'][0:3].zfill(3) >= '001') and (row['diag_2'][0:3].zfill(3) <= '139' ) else row['d2'], axis=1)
+df['d2'] = df.apply(lambda row: 13 if (row['diag_2'][0:3].zfill(3) >= '290') and (row['diag_2'][0:3].zfill(3) <= '319' ) else row['d2'], axis=1)
+df['d2'] = df.apply(lambda row: 13 if (row['diag_2'][0:1] >= 'E') and (row['diag_2'][0:1] <= 'V' ) else row['d2'], axis=1)
+df['d2'] = df.apply(lambda row: 13 if (row['diag_2'][0:3].zfill(3) >= '280') and (row['diag_2'][0:3].zfill(3) <= '289' ) else row['d2'], axis=1)
+df['d2'] = df.apply(lambda row: 13 if (row['diag_2'][0:3].zfill(3) >= '320') and (row['diag_2'][0:3].zfill(3) <= '359' ) else row['d2'], axis=1)
+df['d2'] = df.apply(lambda row: 13 if (row['diag_2'][0:3].zfill(3) >= '630') and (row['diag_2'][0:3].zfill(3) <= '679' ) else row['d2'], axis=1)
+df['d2'] = df.apply(lambda row: 13 if (row['diag_2'][0:3].zfill(3) >= '360') and (row['diag_2'][0:3].zfill(3) <= '389' ) else row['d2'], axis=1)
+df['d2'] = df.apply(lambda row: 13 if (row['diag_2'][0:3].zfill(3) >= '740') and (row['diag_2'][0:3].zfill(3) <= '759' ) else row['d2'], axis=1)
+df['d2'] = df.apply(lambda row: 0 if (row['diag_2'][0:3].zfill(3)  == '783' or row['diag_2'][0:3].zfill(3)  == '789') else row['d2'], axis=1)
+df['d2'] = df.apply(lambda row: -1 if (row['diag_2'][0:1] == '?') else row['d2'], axis=1))
 ```
-
-Now, we'll convert the datasets to the recordIO-wrapped protobuf format used by the Amazon SageMaker algorithms, and then upload this data to S3. We'll start with training data.
+### Regrouping of the second secondary diagnosis
 ```python
-train_file = 'linear_train.data'
-
-f = io.BytesIO()
-smac.write_numpy_to_dense_tensor(f, train_X.astype('float32'), train_y.astype('float32'))
-f.seek(0)
-
-boto3.Session().resource('s3').Bucket(bucket).Object(os.path.join(prefix, 'train', train_file)).upload_fileobj(f);
-
-validation_file = 'linear_validation.data'
-
-f = io.BytesIO()
-smac.write_numpy_to_dense_tensor(f, val_X.astype('float32'), val_y.astype('float32'))
-f.seek(0)
-
-boto3.Session().resource('s3').Bucket(bucket).Object(os.path.join(prefix, 'validation', validation_file)).upload_fileobj(f)
+# Regrouping the second secondary diagnosis
+df['d3'] = df.apply(lambda row: 1 if (row['diag_3'][0:3].zfill(3) >= '390') and (row['diag_3'][0:3].zfill(3) <= '459' ) or  (row['diag_3'][0:3].zfill(3) == '785' ) else row['d3'], axis=1)
+df['d3'] = df.apply(lambda row: 2 if (row['diag_3'][0:3].zfill(3) >= '460') and (row['diag_3'][0:3].zfill(3) <= '519' ) or  (row['diag_3'][0:3].zfill(3) == '786' ) else row['d3'], axis=1)
+df['d3'] = df.apply(lambda row: 3 if (row['diag_3'][0:3].zfill(3) >= '520') and (row['diag_3'][0:3].zfill(3) <= '579' ) or  (row['diag_3'][0:3].zfill(3) == '787' ) else row['d3'], axis=1)
+df['d3'] = df.apply(lambda row: 4 if (row['diag_3'][0:3].zfill(3) == '250') else row['d3'], axis=1)
+df['d3'] = df.apply(lambda row: 5 if (row['diag_3'][0:3].zfill(3) >= '800') and (row['diag_3'][0:3].zfill(3) <= '999' ) else row['d3'], axis=1)
+df['d3'] = df.apply(lambda row: 6 if (row['diag_3'][0:3].zfill(3) >= '710') and (row['diag_3'][0:3].zfill(3) <= '739' ) else row['d3'], axis=1)
+df['d3'] = df.apply(lambda row: 7 if (row['diag_3'][0:3].zfill(3) .zfill(3)>= '580') and (row['diag_3'][0:3].zfill(3) <= '629' ) or  (row['diag_3'][0:3].zfill(3) == '788' ) else row['d3'], axis=1)
+df['d3'] = df.apply(lambda row: 8 if (row['diag_3'][0:3].zfill(3) >= '140') and (row['diag_3'][0:3].zfill(3) <= '239' ) else row['d3'], axis=1)
+df['d3'] = df.apply(lambda row: 9 if (row['diag_3'][0:3].zfill(3) >= '790') and (row['diag_3'][0:3].zfill(3) <= '799' ) or  (row['diag_3'][0:3].zfill(3) == '780' ) or  (row['diag_3'][0:3].zfill(3) == '781' ) or  (row['diag_3'][0:3].zfill(3) == '784' ) else row['d3'], axis=1)
+df['d3'] = df.apply(lambda row: 10 if (row['diag_3'][0:3].zfill(3) >= '240') and (row['diag_3'][0:3].zfill(3) <= '249' ) else row['d3'], axis=1)
+df['d3'] = df.apply(lambda row: 10 if (row['diag_3'][0:3].zfill(3) >= '251') and (row['diag_3'][0:3].zfill(3) <= '279' ) else row['d3'], axis=1)
+df['d3'] = df.apply(lambda row: 11 if (row['diag_3'][0:3].zfill(3) >= '680') and (row['diag_3'][0:3].zfill(3) <= '709' ) or  (row['diag_3'][0:3].zfill(3) == '782' ) else row['d3'], axis=1)
+df['d3'] = df.apply(lambda row: 12 if (row['diag_3'][0:3].zfill(3) >= '001') and (row['diag_3'][0:3].zfill(3) <= '139' ) else row['d3'], axis=1)
+df['d3'] = df.apply(lambda row: 13 if (row['diag_3'][0:3].zfill(3) >= '290') and (row['diag_3'][0:3].zfill(3) <= '319' ) else row['d3'], axis=1)
+df['d3'] = df.apply(lambda row: 13 if (row['diag_3'][0:1] >= 'E') and (row['diag_3'][0:1] <= 'V' ) else row['d3'], axis=1)
+df['d3'] = df.apply(lambda row: 13 if (row['diag_3'][0:3].zfill(3) >= '280') and (row['diag_3'][0:3].zfill(3) <= '289' ) else row['d3'], axis=1)
+df['d3'] = df.apply(lambda row: 13 if (row['diag_3'][0:3].zfill(3) >= '320') and (row['diag_3'][0:3].zfill(3) <= '359' ) else row['d3'], axis=1)
+df['d3'] = df.apply(lambda row: 13 if (row['diag_3'][0:3].zfill(3) >= '630') and (row['diag_3'][0:3].zfill(3) <= '679' ) else row['d3'], axis=1)
+df['d3'] = df.apply(lambda row: 13 if (row['diag_3'][0:3].zfill(3) >= '360') and (row['diag_3'][0:3].zfill(3) <= '389' ) else row['d3'], axis=1)
+df['d3'] = df.apply(lambda row: 13 if (row['diag_3'][0:3].zfill(3) >= '740') and (row['diag_3'][0:3].zfill(3) <= '759' ) else row['d3'], axis=1)
+df['d3'] = df.apply(lambda row: 0 if (row['diag_3'][0:3].zfill(3)  == '783' or row['diag_3'][0:3].zfill(3)  == '789') else row['d3'], axis=1)
+df['d3'] = df.apply(lambda row: -1 if (row['diag_3'][0:1] == '?') else row['d3'], axis=1))                           
 ```
 ---
 ## Train
