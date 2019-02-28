@@ -116,7 +116,7 @@ plt.rcParams['figure.figsize'] = (20, 9)
 sns.distplot(df_clean['absolute_magnitude'])
 plt.show()
 ```
-<img src="{{ site.url }}{{ site.baseurl }}/images/sagemaker/sagemaker1.jpg" alt="sagemaker training">
+<img src="{{ site.url }}{{ site.baseurl }}/images/d-patients/d_patients_data_cleaning.gif" alt="data cleaning">
 ### Observation:
 This histogram is a normal distribution as it is bell shaped.
 
