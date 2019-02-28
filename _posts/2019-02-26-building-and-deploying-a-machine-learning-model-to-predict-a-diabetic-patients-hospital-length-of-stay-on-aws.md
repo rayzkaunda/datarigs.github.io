@@ -122,7 +122,7 @@ We will convert the gender, readimitted columns to numerical to 0 and 1 and the 
 ### Dealing with diagnosis columns
 In the dataset there are three diagnoses, one main and two secondary, containing on average 752 distinct codes in each one, so I decided to perform a regrouping based on an analysis performed by Strack et al. in 2014, on the same theme and using the same dataset, published in (https://www.hindawi.com/journals/bmri/2014/781670/abs/).
 
-<img src="{{ site.url }}{{ site.baseurl }}/images/d-patients/summary_icd-codes.jpeg" alt="summary">
+<img src="{{ site.url }}{{ site.baseurl }}/images/d-patients/summary_icd_codes.jpeg" alt="summary">
 
 
 
