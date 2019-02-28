@@ -104,8 +104,11 @@ print(df_clean.shape)
 ```
 (4687, 35)
 
-### How is the data distributed?
-Plot some of the features distribution and write a summary of what the plot tells you.
+### Data Prepocessing and Cleanup
+---
+I used to hate cleaning and wrangling data but now it's the love of my life. I simply love it. I know many of you don't believe me. Dirty data is the norm and as a former machinist I love to get my hands dirty without the oil smell. The key to cleaning data is simple. Love it. To have a sucessful data project one must clean and explore the data intensively in order to ask and answer the right questions.
+
+The data contains some columns with missing values and non-numeric columns and will need alot of clean up and prepocessing before feeding it to our model.
 
 ```python
 # Make plots
