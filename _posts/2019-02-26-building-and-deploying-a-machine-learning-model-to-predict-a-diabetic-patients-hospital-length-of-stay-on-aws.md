@@ -98,27 +98,36 @@ The data contains some columns with missing values and non-numeric columns and w
 #### Me when I come across dirty data
 <img src="{{ site.url }}{{ site.baseurl }}/images/d-patients/d_patients_data_cleaning.gif" alt="data cleaning">
 
-First we are going to  convert  the categorical columns to numerical columns and then clean all the other columns we are going to use in our model.
+First we are going to convert the categorical columns to numerical columns and then clean all the other columns we are going to use in our model.
 
 ```python
 #clean age column to 10 categories
 df['age_group'] = df['age'].replace({'[0-10)': 0, '[10-20)': 1, '[20-30)': 2, '[30-40)': 3, '[40-50)': 4, '[50-60)': 5, '[60-70)': 6, '[70-80)': 7, '[80-90)': 8, '[90-100)': 9})
 #will leave age column for now for visualization but will drop it later  
 ```
-
-### Observation:
-Non-Normality – Histogram: a right-skewed distribution, plotted as a histogram. The histogram is not bell-shaped, indicating that the distribution is not normal.
-
 ```python
-sns.distplot(df_clean['orbit_uncertainity'])
-plt.show()
+#clean race column and will leave race column for now for visualization but will drop it later
+df['ethinicity'] = df.apply(lambda row: 0 if (row['race'] == '?') else -1, axis=1)
+df['ethinicity'] = df.apply(lambda row: 1 if (row['race'] == 'AfricanAmerican') else row['ethinicity'], axis=1)
+df['ethinicity'] = df.apply(lambda row: 2 if (row['race'] == 'Asian') else row['ethinicity'], axis=1)
+df['ethinicity'] = df.apply(lambda row: 3 if (row['race'] == 'Caucasian') else row['ethinicity'], axis=1)
+df['ethinicity'] = df.apply(lambda row: 4 if (row['race'] == 'Hispanic') else row['ethinicity'], axis=1)
+df['ethinicity'] = df.apply(lambda row: 5 if (row['race'] == 'Other') else row['ethinicity'], axis=1)
+df.head(5)
 ```
-<img src="{{ site.url }}{{ site.baseurl }}/images/sagemaker/sagemaker3.jpg" alt="sagemaker training">
+<img src="{{ site.url }}{{ site.baseurl }}/images/d-patients/d_patients_data_cleaning.gif" alt="data cleaning">
 
-### Observation:
-This is a bi-model distribution and the data can reveal a shift in the process.For Processes that display this distribution, it is normally understood that there are 2 independent sources of Variation that result in Peaks within the data.
+### Clean medications columns and other columns
 
-Correlation between data:
+We will convert the gender, readimitted columns to numerical to 0 and 1 and the medications column to 0 if the patient did not receive the medications and 1 if the patient recieved the medications. In the original dataset, the  medications columns also had other attributes like steady but for this model we are going to categorize our columns into 2 attributes which in production should be given alot of consideration according to the  problem statement and how we are going to evaluate our model.
+
+### Dealing with diagonosis columns
+In the dataset there are three diagnoses, one main and two secondary, containing on average 752 distinct codes in each one, so I decided to perform a regrouping based on an analysis performed by Strack et al. in 2014, on the same theme and using the same dataset, published in (https://www.hindawi.com/journals/bmri/2014/781670/abs/).
+
+<img src="{{ site.url }}{{ site.baseurl }}/images/d-patients/summary_icd-codes.jpeg" alt="summary">
+
+
+
 Are any of the columns correlated?
 ```python
 cmap = sns.diverging_palette(0, 255, sep=1, n=256, as_cmap=True)
