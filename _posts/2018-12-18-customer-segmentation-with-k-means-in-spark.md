@@ -58,7 +58,7 @@ customersDf.createOrReplaceTempView("customersDf")
 In the pie chart we can see the different payment methods and the percentage of customer churn for each. For example, for credit card and automatic payments the churn was 2.27% and for bank tranfers it was 4.41%. Furthermore, the churn for mailed checks was 4.67% and electronic checks was 13.22%. From this we can form a hypothesis of our dataset and before performing our analysis.
 
 ### TRAIN K-MEANS
-Fist we use the StringIndexer transformer to index all categorical columns and the the VectorAssembler to transform our features columns to a single vector column as required for hypothesis testing and the K-means algorithm.
+First we use the StringIndexer transformer to index all categorical columns and the the VectorAssembler to transform our features columns to a single vector column as required for hypothesis testing and the K-means algorithm.
 
 ```scala
 //Index categorical columns
@@ -157,3 +157,5 @@ finalDataset.show(5)
 // our 3 dataframes have been joined and then create a temp view for SQL queries
 finalDataset.createOrReplaceTempView("finalDataset")
 ```
+Now that we have joined our original dataset complete our analysis.
+To be continued... 
