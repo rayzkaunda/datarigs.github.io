@@ -55,7 +55,7 @@ from sagemaker import get_execution_role
 
 role = get_execution_role()
 
-bucket = 'datastorez'# enter your s3 bucket where you will copy data and model artifacts
+bucket = 'bucket'# enter your s3 bucket where you will copy data and model artifacts
 prefix = 'sagemaker/Diabetic-prediction' # place to upload training files within the bucket
 ```
 Next, we import the necessary imports for our model and visualizations.
@@ -78,27 +78,12 @@ import sagemaker.amazon.common as smac
 
 df = pd.read_csv('s3://<bucket>/diabetic_data.csv', header = 0, sep=',')
 df.head(5)
+```
+<img src="{{ site.url }}{{ site.baseurl }}/images/d-patients/dataframe.jpeg" alt="data dataframe">
 
-# list the columns in the df
-datalist = data.columns.tolist()
-# Assign new position for label column(hazardous) as required by Sagemaker's algorithms
-datalist.insert(0, datalist.pop(datalist.index('hazardous')))
-df = data.reindex(columns= datalist)
-df.columns.tolist()
-
-# specify columns extracted from dataset
-df.columns = ['hazardous','neo_reference_id','name','absolute_magnitude','est_dia_in_kmmin','est_dia_in_kmmax','est_dia_in_mmin',
- 'est_dia_in_mmax', 'est_dia_in_milesmin', 'est_dia_in_milesmax', 'est_dia_in_feetmin', 'est_dia_in_feetmax','close_approach_date',
- 'epoch_date_close_approach', 'relative_velocity_km_per_sec', 'relative_velocity_km_per_hr', 'miles_per_hour', 'miss_dist.astronomical',
- 'miss_dist.lunar', 'miss_dist.kilometers', 'miss_dist.miles', 'orbiting_body', 'orbit_id', 'orbit_determination_date',
- 'orbit_uncertainity', 'minimum_orbit_intersection', 'jupiter_tisserand_invariant', 'epoch_osculation', 'eccentricity',
- 'semi_major_axis', 'inclination', 'asc_node_longitude', 'orbital_period', 'perihelion_distance','perihelion_arg', 'aphelion_dist',
- 'perihelion_time', 'mean_anomaly', 'mean_motion', 'equinox']
- ```
  For the sake of this tutorial we drop some columns containing dates but if your model requires you have to preprocess your dates to strings.
 
 ```python
-df_clean = df.drop(['close_approach_date', 'orbiting_body', 'orbit_determination_date','epoch_date_close_approach', 'orbit_determination_date', 'equinox'], axis=1)
 # print the shape of the data file
 print(df_clean.shape)
 ```
