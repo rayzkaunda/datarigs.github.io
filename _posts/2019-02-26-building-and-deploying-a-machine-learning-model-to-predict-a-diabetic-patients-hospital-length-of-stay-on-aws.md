@@ -14,7 +14,7 @@ Using the given dataset, you  will develop a modern scalable full stack applicat
 ### Project Overview
 
 In 2012, there were about 36.5 million hospital stays with an average length of stay of 4.5 days
-and an average cost of 10,400 dollars per stay summing up to 377 billion dollars('https://www.hcup-us.ahrq.gov/reports/statbriefs/sb180-Hospitalizations-United-States-2012.pdf').
+and an average cost of 10,400 dollars per stay summing up to 377 billion dollars [link]('https://www.hcup-us.ahrq.gov/reports/statbriefs/sb180-Hospitalizations-United-States-2012.pdf').
 In 2012, there were approximately 36.5 million hospital stays in the United States, representing a
 hospitalization rate of 116.2 stays per 1,000 population. Across all types of stays, the average length
 of a hospital stay was 4.5 days.
@@ -120,7 +120,7 @@ df['ethinicity'] = df.apply(lambda row: 5 if (row['race'] == 'Other') else row['
 We will convert the gender, readimitted columns to numerical to 0 and 1 and the medications column to 0 if the patient did not receive the medications and 1 if the patient recieved the medications. In the original dataset, the  medications columns also had other attributes like steady but for this model we are going to categorize our columns into 2 attributes which in production should be given alot of consideration according to the  problem statement and how we are going to evaluate our model.
 
 ### Dealing with diagnosis columns
-In the dataset there are three diagnoses, one main and two secondary, containing on average 752 distinct codes in each one, so I decided to perform a regrouping based on an analysis performed by Strack et al. in 2014, on the same theme and using the same dataset, published in (https://www.hindawi.com/journals/bmri/2014/781670/abs/).
+In the dataset there are three diagnoses, one main and two secondary, containing on average 752 distinct codes in each one, so I decided to perform a regrouping based on an analysis performed by Strack et al. in 2014, on the same theme and using the same dataset, published in [link]((https://www.hindawi.com/journals/bmri/2014/781670/abs/)
 
 <img src="{{ site.url }}{{ site.baseurl }}/images/d-patients/summary_icd_codes.jpeg" alt="summary">
 
@@ -213,6 +213,25 @@ df['d3'] = df.apply(lambda row: 0 if (row['diag_3'][0:3].zfill(3)  == '783' or r
 df['d3'] = df.apply(lambda row: -1 if (row['diag_3'][0:1] == '?') else row['d3'], axis=1))                           
 ```
 ---
+# Exploratory Data Analysis
+
+Next we are going to perform an exploratory data analysis on the dataset to gain more insight and visualize some features of the the dataset.
+
+```python
+# Distribution of number of hospital stays
+# find the counts for each unique category
+patient_counts = df['time_in_hospital'].value_counts()
+fig = plt.figure(figsize=(12,8)) # define plot area
+ax = fig.gca() # define axis    
+patient_counts.plot.bar(ax = ax) # Use the plot.bar method on the counts data frame
+ax.set_title('Number of days in Hospital') # Give the plot a main title
+ax.set_xlabel('Number of days in Hospital') # Set text for the x axis
+ax.set_ylabel('Total Days')# Set text for y axis
+```
+<img src="{{ site.url }}{{ site.baseurl }}/images/d-patients/plot.jpeg" alt="plot">
+
+
+
 ## Train
 
 Now we can begin to specify our linear model.  Amazon SageMaker's Linear Learner actually fits many models in parallel, each with slightly different hyperparameters, and then returns the one with the best fit.  This functionality is automatically enabled.  We can influence this using parameters like:
