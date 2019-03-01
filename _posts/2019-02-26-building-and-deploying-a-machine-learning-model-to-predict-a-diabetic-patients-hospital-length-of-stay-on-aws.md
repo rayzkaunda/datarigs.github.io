@@ -159,7 +159,7 @@ df['d1'] = df.apply(lambda row: 0 if (row['diag_1'][0:3].zfill(3)  == '783' or r
 df['d1'] = df.apply(lambda row: -1 if (row['diag_1'][0:1] == '?') else row['d1'], axis=1))
 ```
 
-### Regrouping of the first secondary diagnosis
+Regrouping of the first secondary diagnosis
 
 ```python
 # Regrouping of the first secondary diagnosis
@@ -186,7 +186,8 @@ df['d2'] = df.apply(lambda row: 13 if (row['diag_2'][0:3].zfill(3) >= '740') and
 df['d2'] = df.apply(lambda row: 0 if (row['diag_2'][0:3].zfill(3)  == '783' or row['diag_2'][0:3].zfill(3)  == '789') else row['d2'], axis=1)
 df['d2'] = df.apply(lambda row: -1 if (row['diag_2'][0:1] == '?') else row['d2'], axis=1))
 ```
-### Regrouping of the second secondary diagnosis
+Regrouping of the second secondary diagnosis
+
 ```python
 # Regrouping the second secondary diagnosis
 df['d3'] = df.apply(lambda row: 1 if (row['diag_3'][0:3].zfill(3) >= '390') and (row['diag_3'][0:3].zfill(3) <= '459' ) or  (row['diag_3'][0:3].zfill(3) == '785' ) else row['d3'], axis=1)
@@ -229,6 +230,25 @@ ax.set_xlabel('Number of days in Hospital') # Set text for the x axis
 ax.set_ylabel('Total Days')# Set text for y axis
 ```
 <img src="{{ site.url }}{{ site.baseurl }}/images/d-patients/plot.jpeg" alt="plot">
+
+### Plot for counts of patients who are readmitted:
+Plot for counts of patients who are readmitted or not readmitted after an encounter
+```python
+# find the counts for readmitted column(0 for no 1 for yes)
+readmitted_counts = df['readmitted'].value_counts()
+readmitted_counts
+```
+```python
+#plot for counts of patients who are readmitted:
+fig = plt.figure(figsize=(16,8))
+ax = fig.gca()     
+readmitted_counts.plot.bar(ax = ax)
+ax.set_title('Patient Readmissions')
+ax.set_xlabel('Was patient Readmitted(0 for No 1 for Yes)')
+ax.set_ylabel('Total Readmitted Patients')
+```
+<img src="{{ site.url }}{{ site.baseurl }}/images/d-patients/plot_1.jpeg" alt="plot_1">
+
 
 
 
