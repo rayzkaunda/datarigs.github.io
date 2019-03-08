@@ -120,7 +120,7 @@ df['ethinicity'] = df.apply(lambda row: 5 if (row['race'] == 'Other') else row['
 We will convert the gender, readimitted columns to numerical to 0 and 1 and the medications column to 0 if the patient did not receive the medications and 1 if the patient recieved the medications. In the original dataset, the  medications columns also had other attributes like steady but for this model we are going to categorize our columns into 2 attributes which in production should be given alot of consideration according to the  problem statement and how we are going to evaluate our model.
 
 ### Dealing with diagnosis columns
-In the dataset there are three diagnoses, one main and two secondary, containing on average 752 distinct codes in each one, so I decided to perform a regrouping based on an analysis performed by Strack et al. in 2014, on the same theme and using the same dataset, published in [link]((https://www.hindawi.com/journals/bmri/2014/781670/abs/)
+In the dataset there are three diagnoses, one main and two secondary, containing on average 752 distinct codes in each one, so I decided to perform a regrouping based on an analysis performed by Strack et al. in 2014, on the same theme and using the same dataset, published in [link](https://www.hindawi.com/journals/bmri/2014/781670/abs/).
 
 <img src="{{ site.url }}{{ site.baseurl }}/images/d-patients/summary_icd_codes.jpeg" alt="summary">
 
