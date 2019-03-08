@@ -253,8 +253,6 @@ ax.set_ylabel('Total Readmitted Patients')
 <img src="{{ site.url }}{{ site.baseurl }}/images/d-patients/plot_1.jpeg" alt="plot_1">
 
 
-
-
 ## Train
 
 Now we can begin to specify our linear model.  Amazon SageMaker's Linear Learner actually fits many models in parallel, each with slightly different hyperparameters, and then returns the one with the best fit.  This functionality is automatically enabled.  We can influence this using parameters like:
@@ -263,6 +261,7 @@ Now we can begin to specify our linear model.  Amazon SageMaker's Linear Learner
 - `loss` which controls how we penalize mistakes in our model estimates.  For this case, let's use absolute loss as we haven't spent much time cleaning the data, and absolute loss will be less sensitive to outliers.
 - `wd` or `l1` which control regularization.  Regularization can prevent model overfitting by preventing our estimates from becoming too finely tuned to the training data, which can actually hurt generalizability.  In this case, we'll leave these parameters as their default "auto" though.
 - `predictor_type` our model will use the  binary_classifier since we going to predict if  a patient will stay 5 days or more in the hospital.
+---
 ```python
 # See 'Algorithms Provided by Amazon SageMaker: Common Parameters' in the SageMaker documentation for an explanation of these values.
 from sagemaker.amazon.amazon_estimator import get_image_uri
@@ -330,6 +329,7 @@ linear_training_params = {
 }
 ```
 Now let's kick off our training job in SageMaker's distributed, managed training, using the parameters we just created. Because training is managed, we don't have to wait for our job to finish to continue, but for this case, let's use boto3's 'training_job_completed_or_stopped' waiter so we can ensure that the job has been started.
+
 ```python
 %%time
 
