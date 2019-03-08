@@ -232,12 +232,15 @@ ax.set_ylabel('Total Days')# Set text for y axis
 <img src="{{ site.url }}{{ site.baseurl }}/images/d-patients/plot.jpeg" alt="plot">
 
 ### Plot for counts of patients who are readmitted:
-Plot for counts of patients who are readmitted or not readmitted after an encounter
+Plot for counts of patients who are readmitted or not readmited after an encounter. Note in the dataset the readmitted column has 3 labels readmitted within 30 days(<30), (>30) and No. We are going to group the readmitted patients together but in production this could be a business decision about how to group our patients based on cost of whether a patient is readmitted in less than 30 days or not.
+
 ```python
 # find the counts for readmitted column(0 for no 1 for yes)
 readmitted_counts = df['readmitted'].value_counts()
 readmitted_counts
-```
+0    54864
+1    46902
+Name: readmitted, dtype: int64
 ```python
 #plot for counts of patients who are readmitted:
 fig = plt.figure(figsize=(16,8))
@@ -259,13 +262,13 @@ Now we can begin to specify our linear model.  Amazon SageMaker's Linear Learner
 - `num_models` to increase to total number of models run.  The specified parameters will always be one of those models, but the algorithm also chooses models with nearby parameter values in order to find a solution nearby that may be more optimal.  In this case, we're going to use the max of 32.
 - `loss` which controls how we penalize mistakes in our model estimates.  For this case, let's use absolute loss as we haven't spent much time cleaning the data, and absolute loss will be less sensitive to outliers.
 - `wd` or `l1` which control regularization.  Regularization can prevent model overfitting by preventing our estimates from becoming too finely tuned to the training data, which can actually hurt generalizability.  In this case, we'll leave these parameters as their default "auto" though.
-
+- `predictor_type` our model will use the  binary_classifier since we going to predict if  a patient will stay 5 days or more in the hospital.
 ```python
 # See 'Algorithms Provided by Amazon SageMaker: Common Parameters' in the SageMaker documentation for an explanation of these values.
 from sagemaker.amazon.amazon_estimator import get_image_uri
 container = get_image_uri(boto3.Session().region_name, 'linear-learner')
 
-linear_job = 'ASTEROID-linear-' + time.strftime("%Y-%m-%d-%H-%M-%S", time.gmtime())
+linear_job = 'DIABETIC-linear-' + time.strftime("%Y-%m-%d-%H-%M-%S", time.gmtime())
 
 
 
@@ -314,12 +317,12 @@ linear_training_params = {
         "S3OutputPath": "s3://{}/{}/".format(bucket, prefix)
     },
     "HyperParameters": {
-        "feature_dim": "32",
-        "mini_batch_size": "100",
-        "predictor_type": "regressor",
-        "epochs": "10",
+        "feature_dim": "38",
+        "mini_batch_size": "250",
+        "predictor_type": "binary_classifier",
+        "epochs": "100",
         "num_models": "32",
-        "loss": "absolute_loss"
+        "loss": "logistic"
     },
     "StoppingCondition": {
         "MaxRuntimeInSeconds": 60 * 60
