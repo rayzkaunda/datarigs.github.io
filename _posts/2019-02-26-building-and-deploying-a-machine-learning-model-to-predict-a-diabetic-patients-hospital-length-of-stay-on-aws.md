@@ -131,7 +131,7 @@ df['d1'] = df['diag_1']
 df['d2'] = df['diag_2']
 df['d3'] = df['diag_3']
 ```
-Next we are grouping the digonosis columns based on the ICD-10 codes.
+Next we are grouping the primary diagnosis columns based on the ICD-10 codes.
 
 ```python
 # Regrouping the main diagnosis
@@ -332,6 +332,8 @@ linear_training_params = {
 }
 
 ```
+Job name is: DIABETIC-linear-2019-03-05-23-30-09
+
 Now let's kick off our training job in SageMaker's distributed, managed training, using the parameters we just created. Because training is managed, we don't have to wait for our job to finish to continue, but for this case, let's use boto3's 'training_job_completed_or_stopped' waiter so we can ensure that the job has been started.
 
 ```python
@@ -381,7 +383,7 @@ Once we've setup a model, we can configure what our hosting endpoints should be.
 1. Our hosting model name
 
 ```python
-linear_endpoint_config = 'DEMO-linear-endpoint-config-' + time.strftime("%Y-%m-%d-%H-%M-%S", time.gmtime())
+linear_endpoint_config = 'Diabetic-linear-endpoint-config-' + time.strftime("%Y-%m-%d-%H-%M-%S", time.gmtime())
 print(linear_endpoint_config)
 create_endpoint_config_response = sm.create_endpoint_config(
     EndpointConfigName=linear_endpoint_config,
@@ -393,12 +395,15 @@ create_endpoint_config_response = sm.create_endpoint_config(
 
 print("Endpoint Config Arn: " + create_endpoint_config_response['EndpointConfigArn'])
 ```
+Diabetic-linear-endpoint-config-2019-03-05-23-40-10
+Endpoint Config Arn: arn:aws:sagemaker:us-east-1:238416803993:endpoint-config/diabetic-linear-endpoint-config-2019-03-05-23-40-10
+
 Now that we've specified how our endpoint should be configured, we can create them. This can be done in the background, but for now let's run a loop that updates us on the status of the endpoints so that we know when they are ready for use.
 
 ```python
 %%time
 
-linear_endpoint = 'DEMO-linear-endpoint-' + time.strftime("%Y%m%d%H%M", time.gmtime())
+linear_endpoint = 'Diabetic-linear-endpoint-config-' + time.strftime("%Y%m%d%H%M", time.gmtime())
 print(linear_endpoint)
 create_endpoint_response = sm.create_endpoint(
     EndpointName=linear_endpoint,
