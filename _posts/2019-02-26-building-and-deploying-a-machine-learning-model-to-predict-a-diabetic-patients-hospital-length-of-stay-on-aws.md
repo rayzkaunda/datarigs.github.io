@@ -8,7 +8,7 @@ mathjax: "true"
 ---
 
 # Business Problem:
-Using the given dataset, you  will develop a modern scalable full stack application on AWS cloud using a predictive model to predict how many days an admitted diabetic patient will spend 5 days or more in a hospital. We have framed our problem as a binary classification problem but it can also be a regression problem.  
+Using the given dataset, you  will develop a modern scalable full stack application on AWS cloud using a predictive model to predict whether an admitted diabetic patient will spend 5 days or more in a hospital. We have framed our problem as a binary classification problem but it can also be a regression problem.  
 
 
 ### Project Overview
@@ -464,8 +464,8 @@ test_mae_baseline = np.mean(np.abs(test_y - np.median(train_y))) ## training med
 print("Test MAE Baseline :", round(test_mae_baseline, 3))
 print("Test MAE Linear:", round(test_mae_linear,3))
 ```
-Test MAE Baseline : 0.18
-Test MAE Linear: 0.181
+Test MAE Baseline : 0.303
+Test MAE Linear: 0.32
 ```python
 #Let's compare predictive accuracy using a classification threshold of 0.5 for the predicted and compare against the majority class prediction from training data set
 test_pred_class = (test_pred > 0.5)+0;
@@ -479,13 +479,37 @@ print("Baseline Accuracy:", round(baseline_accuracy,1), "%")
 ```
 Our accuracy on the model
 
-Prediction Accuracy: 82.0 %
-Baseline Accuracy: 82.0 %  
+Prediction Accuracy: 75.3 %
+Baseline Accuracy: 69.7 %
+---
+Lets compute the confusion matrix for our model
+
+
+
+```python
+
+
+```
+
+
+
+
+
 
 Finally, run the following to delete the endpoint instance to avoid charges and stop the notebook instance(if you want to keep the notebook don't delete the notebook instance) in the Sagemaker console(This does not delete the notebook).
 ```python
 sm.delete_endpoint(EndpointName=linear_endpoint)
 ```
-### Conclusion
-In this post,  we learned the basic foundations loading data, training, evaluation and deploying a model in AWS SageMaker. The key takeways.
-- Data preprocessing: The data in the feature  and label columns have to be float32 format to convert to recordIO-wrapped protobuf format. The label column has be the     first in the dataframe as expected by most SageMaker algorithms.
+---
+## Conclusion
+
+- Our  model does a average job of predicting length of hospital stays for admitted diabetic patients has an overall accuracy of close to 75%. We can re-run the model with different values of the hyper-parameters, loss functions etc and see if we get improved prediction. Re-running the model with further tweaks to these hyperparameters may provide more accurate out-of-sample predictions.
+- We also did not do much feature engineering. We can create additional features by considering cross-product/intreaction of multiple features, squaring or raising higher powers of the features to induce non-linear effects, etc. If we expand the features using non-linear terms and interactions, we can then tweak the regulaization parameter to optimize the expanded model and hence generate improved forecasts.
+- As a further extension, we can use many of non-linear models available through SageMaker such as XGBoost, MXNet etc.
+- The main goal of the project will be part 2 where we deploy our model to provide real time predictions at any scale using AWS Lambda, S3, API Gateway and Chalice the flask like serverless framework from AWS.
+
+## Part 2: Deploying Our Model for real time predictations
+
+In part two we are going to set up our model using a AWS Lambda and S3 for serveless front end to offer predictions for a given patient in real time.
+
+<img src="{{ site.url }}{{ site.baseurl }}/images/d-patients/Diamed.jpeg" alt="Diamed.jpeg"> 
