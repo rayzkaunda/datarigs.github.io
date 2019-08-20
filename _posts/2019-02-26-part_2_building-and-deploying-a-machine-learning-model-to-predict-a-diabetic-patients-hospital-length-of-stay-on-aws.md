@@ -19,8 +19,8 @@ In part 1 of the post we trained processed the data, trained our model, evaluate
 * The data is then will invoke a Lambda function which will call the Sagemaker endpoint to provide a prediction.
 * Through the same Lambda function Sagemaker provides the output prediction to the client application.
 
-###Create a model
-I already created a trained my model and saved the artifacts to an S3 bucket.In the AWS console go to Sagemaker select models and chose the model you trained. in my case I'll select my pre-trained model. 
+### Create a model
+I already created a trained my model and saved the artifacts to an S3 bucket.In the AWS console go to Sagemaker select models and chose the model you trained. in my case I'll select my pre-trained model. Next you click on create endpoint.
 
 <img src="{{ site.url }}{{ site.baseurl }}/images/d-patients/serverless-frontend-sagemaker.jpeg">
 
@@ -28,7 +28,6 @@ Set the Model name to los-model for this example, and then under IAM role, selec
 
 This role doesn’t need any special access to Amazon S3, so we can select None under S3 buckets you specify, and then choose Create role. We would need these permissions if we were building or training a model, but since we are using a pre-built model here, it is not necessary.
 
-<img src="{{ site.url }}{{ site.baseurl }}/images/d-patients/serverless-frontend-sagemaker.jpeg">
 
 Now enter the following values for the Primary container:
 
@@ -149,6 +148,8 @@ Now that we have created our HTML frontend, we need to upload it to our Amazon S
 aws s3 cp index.html s3://<bucket name>/index.html --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
 ```
 Your new user interface will be available at a url similar to: http://<bucket_name>.s3.amazonaws.com/index.html
+
+<img src="{{ site.url }}{{ site.baseurl }}/images/d-patients/Diamed.jpeg" alt="Diamed.jpeg">
 
 # Conclusion
 Congratulations! You now have a fully functional serverless frontend application for the model that you built, trained, and hosted on Amazon SageMaker!  Using this address, you can now have users submit new data to your model and produce live predictions on the fly.
